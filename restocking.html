@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Restocking — InvTrack</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* Budget slider */
+    .budget-slider-wrap {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    #budget-slider {
+      flex: 1;
+      height: 6px;
+      accent-color: #3b7dd8;
+      cursor: pointer;
+    }
+
+    .budget-value {
+      font-size: 20px;
+      font-weight: 800;
+      color: #1a2332;
+      min-width: 110px;
+      text-align: right;
+    }
+
+    .summary-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 12px 16px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .over-budget-warn {
+      display: none;
+      font-size: 12px;
+      font-weight: 600;
+      color: #dc2626;
+      background: #fee2e2;
+      padding: 3px 10px;
+      border-radius: 10px;
+    }
+
+    /* Place order button */
+    .btn-primary {
+      padding: 10px 24px;
+      background: #3b7dd8;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s, opacity 0.15s;
+    }
+
+    .btn-primary:hover:not(:disabled) { background: #2d6bc4; }
+    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* Success banner */
+    .success-banner {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px;
+      background: #dcfce7;
+      border: 1px solid #86efac;
+      border-radius: 8px;
+      color: #166534;
+      font-size: 13px;
+      font-weight: 600;
+    }
+
+    .success-banner .success-icon {
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+<div class="app-layout">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">&#9783;</div>
+      <div>
+        <div class="brand-name">InvTrack</div>
+        <div class="brand-sub">Inventory Manager</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main Menu</div>
+      <a href="index.html" class="nav-item" data-href="index.html">
+        <span class="nav-icon">&#9783;</span> Dashboard
+      </a>
+      <a href="inventory.html" class="nav-item" data-href="inventory.html">
+        <span class="nav-icon">&#9741;</span> Inventory
+      </a>
+      <a href="orders.html" class="nav-item" data-href="orders.html">
+        <span class="nav-icon">&#128666;</span> Orders
+      </a>
+      <a href="reports.html" class="nav-item" data-href="reports.html">
+        <span class="nav-icon">&#128202;</span> Reports
+      </a>
+      <a href="restocking.html" class="nav-item active" data-href="restocking.html">
+        <span class="nav-icon">&#128230;</span> Restocking
+      </a>
+    </nav>
+    <div class="sidebar-footer">&#169; 2025 InvTrack</div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="topbar">
+      <div>
+        <div class="topbar-title">Restocking</div>
+        <div class="topbar-subtitle">Replenish low-stock inventory</div>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <!-- Budget Card -->
+      <div class="card section-gap" id="budget-section">
+        <div class="card-header">
+          <span class="card-title">Available Budget</span>
+          <span class="badge badge-blue">Drag to adjust</span>
+        </div>
+        <div class="card-body">
+          <div class="budget-slider-wrap">
+            <input type="range" id="budget-slider" min="0" max="10000" value="5000" step="10">
+            <div class="budget-value" id="budget-display">$5,000.00</div>
+          </div>
+          <div class="summary-bar">
+            <div id="order-summary" style="font-size:14px;color:#166534">
+              Selected: <strong>$0.00</strong>
+              <span style="margin:0 10px;color:#cbd5e1">|</span>
+              Budget: <strong>$5,000.00</strong>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <span class="over-budget-warn" id="over-budget-warn">&#9888; Over budget</span>
+              <button id="place-order-btn" class="btn-primary" disabled>
+                &#128230; Place Restocking Order
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Success Banner -->
+      <div class="success-banner section-gap" id="order-success">
+        <span class="success-icon">&#10003;</span>
+        Restocking order placed successfully! View it on the <a href="orders.html" style="color:#166534;text-decoration:underline">Orders page</a>.
+      </div>
+
+      <!-- Recommendations Table -->
+      <div class="card section-gap">
+        <div class="card-header">
+          <span class="card-title">Recommended Restock Items</span>
+          <span class="badge badge-red" style="font-size:11px">Sorted by most critical first</span>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Priority</th>
+                <th>Product</th>
+                <th>Warehouse</th>
+                <th>Unit Price</th>
+                <th>Stock / Reorder</th>
+                <th>Deficit</th>
+                <th>Order Qty</th>
+                <th>Row Total</th>
+                <th style="text-align:center">Include</th>
+              </tr>
+            </thead>
+            <tbody id="restock-body">
+              <tr><td colspan="9" class="empty-state">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /page-content -->
+  </div><!-- /main-content -->
+</div><!-- /app-layout -->
+
+<script src="js/app.js"></script>
+<script src="js/restocking.js"></script>
+</body>
+</html>

@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InvTrack — Architecture</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f0f4f8;
+      color: #1a2332;
+      font-size: 14px;
+      padding: 40px 32px 80px;
+    }
+
+    h1 {
+      font-size: 26px;
+      font-weight: 800;
+      color: #1a2332;
+      margin-bottom: 4px;
+    }
+
+    .page-sub {
+      font-size: 13px;
+      color: #64748b;
+      margin-bottom: 40px;
+    }
+
+    /* Section */
+    .section { margin-bottom: 44px; }
+
+    .section-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #94a3b8;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    /* ── TECH STACK ── */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+    }
+
+    .stack-card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 18px 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .stack-card .sc-layer {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+
+    .stack-card .sc-name {
+      font-size: 16px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .stack-card .sc-desc {
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    .stack-card .sc-tags {
+      margin-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    .tag-blue   { background: #dbeafe; color: #1d4ed8; }
+    .tag-green  { background: #dcfce7; color: #166534; }
+    .tag-orange { background: #ffedd5; color: #9a3412; }
+    .tag-purple { background: #ede9fe; color: #5b21b6; }
+    .tag-gray   { background: #f1f5f9; color: #475569; }
+
+    .sc-server  { border-top: 3px solid #3b7dd8; }
+    .sc-frontend{ border-top: 3px solid #22c55e; }
+    .sc-data    { border-top: 3px solid #f97316; }
+    .sc-style   { border-top: 3px solid #a855f7; }
+
+    /* ── ARCHITECTURE DIAGRAM ── */
+    .arch-diagram {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 32px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .arch-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+    }
+
+    .arch-box {
+      border-radius: 8px;
+      padding: 14px 20px;
+      text-align: center;
+      min-width: 140px;
+    }
+
+    .arch-box .ab-label {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 4px;
+      opacity: 0.7;
+    }
+
+    .arch-box .ab-name {
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .arch-box .ab-sub {
+      font-size: 11px;
+      margin-top: 3px;
+      opacity: 0.7;
+    }
+
+    .box-browser { background: #dbeafe; color: #1e3a8a; }
+    .box-server  { background: #dcfce7; color: #14532d; }
+    .box-fs      { background: #ffedd5; color: #7c2d12; }
+    .box-data    { background: #ede9fe; color: #3b0764; }
+    .box-page    { background: #f1f5f9; color: #1e293b; border: 1px solid #cbd5e1; }
+
+    /* Arrows */
+    .arrow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      padding: 0 6px;
+    }
+
+    .arrow-label {
+      font-size: 10px;
+      color: #94a3b8;
+      white-space: nowrap;
+    }
+
+    .arrow-line {
+      display: flex;
+      align-items: center;
+    }
+
+    .arrow-shaft {
+      width: 40px;
+      height: 2px;
+      background: #cbd5e1;
+    }
+
+    .arrow-head-right::after {
+      content: '';
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      border-left: 7px solid #cbd5e1;
+    }
+
+    .arrow-head-left::before {
+      content: '';
+      border-top: 5px solid transparent;
+      border-bottom: 5px solid transparent;
+      border-right: 7px solid #cbd5e1;
+    }
+
+    .arrow-v {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0 auto;
+      gap: 2px;
+      padding: 4px 0;
+    }
+
+    .arrow-v .arrow-label { text-align: center; }
+
+    .arrow-v-shaft {
+      width: 2px;
+      height: 28px;
+      background: #cbd5e1;
+    }
+
+    .arrow-v-head-down::after {
+      content: '';
+      border-left: 5px solid transparent;
+      border-right: 5px solid transparent;
+      border-top: 7px solid #cbd5e1;
+    }
+
+    .center { display: flex; justify-content: center; }
+
+    /* Pages row */
+    .pages-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .page-node {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 7px;
+      padding: 8px 14px;
+      text-align: center;
+    }
+
+    .page-node .pn-name { font-size: 13px; font-weight: 700; color: #1e293b; }
+    .page-node .pn-js   { font-size: 11px; color: #64748b; margin-top: 2px; }
+
+    /* ── DATA FLOW ── */
+    .flow-container {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 28px 32px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .flow-steps {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      align-items: start;
+      gap: 0;
+    }
+
+    .flow-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .flow-step:not(:last-child)::after {
+      content: '→';
+      position: absolute;
+      right: -12px;
+      top: 18px;
+      font-size: 18px;
+      color: #cbd5e1;
+      font-weight: 300;
+    }
+
+    .flow-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #3b7dd8;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+      flex-shrink: 0;
+    }
+
+    .flow-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 7px;
+      padding: 10px 8px;
+      text-align: center;
+      width: 100%;
+    }
+
+    .flow-box .fb-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #1a2332;
+      margin-bottom: 4px;
+    }
+
+    .flow-box .fb-desc {
+      font-size: 11px;
+      color: #64748b;
+      line-height: 1.4;
+    }
+
+    /* ── FILE MAP ── */
+    .file-map {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .fm-group {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .fm-group-header {
+      padding: 10px 16px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .fmh-blue   { background: #dbeafe; color: #1d4ed8; }
+    .fmh-green  { background: #dcfce7; color: #166534; }
+    .fmh-orange { background: #ffedd5; color: #9a3412; }
+    .fmh-purple { background: #ede9fe; color: #5b21b6; }
+
+    .fm-file {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 16px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .fm-file:last-child { border-bottom: none; }
+
+    .fm-filename {
+      font-size: 12px;
+      font-weight: 700;
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      color: #1a2332;
+      min-width: 150px;
+    }
+
+    .fm-filedesc {
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.4;
+    }
+
+    /* ── BUGS SECTION ── */
+    .bugs-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .bug-card {
+      background: #fff;
+      border: 1px solid #fecaca;
+      border-left: 4px solid #ef4444;
+      border-radius: 8px;
+      padding: 14px 16px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+    }
+
+    .bug-num {
+      background: #fee2e2;
+      color: #991b1b;
+      font-size: 11px;
+      font-weight: 800;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .bug-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1a2332;
+      margin-bottom: 3px;
+    }
+
+    .bug-desc {
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: 'SFMono-Regular', Consolas, monospace;
+      background: #f1f5f9;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-size: 11.5px;
+      color: #334155;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>InvTrack — System Architecture</h1>
+  <p class="page-sub">Architecture overview · Tech stack · Data flow · File map · Known bugs</p>
+
+  <!-- ── TECH STACK ── -->
+  <div class="section">
+    <div class="section-title">Tech Stack</div>
+    <div class="stack-grid">
+
+      <div class="stack-card sc-server">
+        <div class="sc-layer" style="color:#3b7dd8">Server</div>
+        <div class="sc-name">Node.js</div>
+        <div class="sc-desc">Static file server using only the standard library — no npm, no express.</div>
+        <div class="sc-tags">
+          <span class="tag tag-blue">http</span>
+          <span class="tag tag-blue">fs</span>
+          <span class="tag tag-blue">path</span>
+          <span class="tag tag-gray">CommonJS</span>
+          <span class="tag tag-gray">Port 3000</span>
+        </div>
+      </div>
+
+      <div class="stack-card sc-frontend">
+        <div class="sc-layer" style="color:#22c55e">Frontend JS</div>
+        <div class="sc-name">Vanilla JS (ES5)</div>
+        <div class="sc-desc">No framework, no bundler. Scripts loaded via &lt;script&gt; tags in dependency order.</div>
+        <div class="sc-tags">
+          <span class="tag tag-green">XHR</span>
+          <span class="tag tag-green">IIFEs</span>
+          <span class="tag tag-green">DOM APIs</span>
+          <span class="tag tag-gray">No modules</span>
+        </div>
+      </div>
+
+      <div class="stack-card sc-data">
+        <div class="sc-layer" style="color:#f97316">Data</div>
+        <div class="sc-name">JSON Files</div>
+        <div class="sc-desc">All data stored as flat JSON files on disk. No database, no API layer.</div>
+        <div class="sc-tags">
+          <span class="tag tag-orange">products.json</span>
+          <span class="tag tag-orange">orders.json</span>
+          <span class="tag tag-gray">20 products</span>
+          <span class="tag tag-gray">28 orders</span>
+        </div>
+      </div>
+
+      <div class="stack-card sc-style">
+        <div class="sc-layer" style="color:#a855f7">Styling</div>
+        <div class="sc-name">CSS3</div>
+        <div class="sc-desc">Single stylesheet for the entire app. CSS Grid, Flexbox, custom properties.</div>
+        <div class="sc-tags">
+          <span class="tag tag-purple">Grid</span>
+          <span class="tag tag-purple">Flexbox</span>
+          <span class="tag tag-purple">CSS Variables</span>
+          <span class="tag tag-gray">No preprocessor</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── ARCHITECTURE DIAGRAM ── -->
+  <div class="section">
+    <div class="section-title">System Architecture</div>
+    <div class="arch-diagram">
+
+      <!-- Row 1: Browser -->
+      <div class="center" style="margin-bottom:6px">
+        <div class="arch-box box-browser">
+          <div class="ab-label">Client</div>
+          <div class="ab-name">Web Browser</div>
+          <div class="ab-sub">Renders HTML · Executes JS · Displays UI</div>
+        </div>
+      </div>
+
+      <!-- Arrow down: HTTP GET / HTTP Response -->
+      <div class="arrow-v center" style="margin-bottom:6px">
+        <div class="arrow-label">HTTP GET request</div>
+        <div class="arrow-v-shaft"></div>
+        <div class="arrow-v-head-down"></div>
+        <div style="height:4px"></div>
+        <div class="arrow-v-shaft" style="background:#e2e8f0"></div>
+        <div class="arrow-label">HTTP response (file bytes)</div>
+      </div>
+
+      <!-- Row 2: Server -->
+      <div class="center" style="margin-bottom:6px">
+        <div class="arch-box box-server">
+          <div class="ab-label">Server · server.js · Port 3000</div>
+          <div class="ab-name">Node.js Static File Server</div>
+          <div class="ab-sub">Routes requests → reads files → sets MIME type → streams response</div>
+        </div>
+      </div>
+
+      <!-- Arrow down: fs.readFile -->
+      <div class="arrow-v center" style="margin-bottom:6px">
+        <div class="arrow-label">fs.readFile(filePath)</div>
+        <div class="arrow-v-shaft"></div>
+        <div class="arrow-v-head-down"></div>
+      </div>
+
+      <!-- Row 3: File System columns -->
+      <div style="display:flex; justify-content:center; gap:14px; margin-bottom:20px">
+
+        <div class="arch-box box-page" style="min-width:unset; padding:12px 16px;">
+          <div class="ab-label">HTML Pages</div>
+          <div style="font-size:12px; font-weight:700; color:#1e293b">
+            index.html<br>inventory.html<br>orders.html<br>reports.html
+          </div>
+        </div>
+
+        <div class="arch-box box-page" style="min-width:unset; padding:12px 16px;">
+          <div class="ab-label">JS Scripts</div>
+          <div style="font-size:12px; font-weight:700; color:#1e293b">
+            js/app.js<br>js/dashboard.js<br>js/inventory.js<br>js/orders.js<br>js/reports.js
+          </div>
+        </div>
+
+        <div class="arch-box box-page" style="min-width:unset; padding:12px 16px;">
+          <div class="ab-label">Stylesheet</div>
+          <div style="font-size:12px; font-weight:700; color:#1e293b">css/styles.css</div>
+        </div>
+
+        <div class="arch-box box-data" style="min-width:unset; padding:12px 16px;">
+          <div class="ab-label">Data</div>
+          <div style="font-size:12px; font-weight:700;">
+            data/products.json<br>data/orders.json
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Pages row -->
+      <div style="text-align:center; margin-bottom:10px">
+        <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:#94a3b8; margin-bottom:10px">
+          Page → Script Mapping (loaded in browser after HTML is fetched)
+        </div>
+        <div class="pages-row">
+          <div class="page-node">
+            <div class="pn-name">Dashboard</div>
+            <div class="pn-js">app.js + dashboard.js</div>
+            <div class="pn-js" style="color:#f97316">products + orders</div>
+          </div>
+          <div class="page-node">
+            <div class="pn-name">Inventory</div>
+            <div class="pn-js">app.js + inventory.js</div>
+            <div class="pn-js" style="color:#f97316">products only</div>
+          </div>
+          <div class="page-node">
+            <div class="pn-name">Orders</div>
+            <div class="pn-js">app.js + orders.js</div>
+            <div class="pn-js" style="color:#f97316">orders only</div>
+          </div>
+          <div class="page-node">
+            <div class="pn-name">Reports</div>
+            <div class="pn-js">app.js + reports.js</div>
+            <div class="pn-js" style="color:#f97316">products + orders</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── DATA FLOW ── -->
+  <div class="section">
+    <div class="section-title">Data Flow — Page Load Sequence</div>
+    <div class="flow-container">
+      <div class="flow-steps">
+
+        <div class="flow-step">
+          <div class="flow-num">1</div>
+          <div class="flow-box">
+            <div class="fb-title">Browser requests page</div>
+            <div class="fb-desc">GET /index.html (or other .html)</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-num">2</div>
+          <div class="flow-box">
+            <div class="fb-title">Server responds</div>
+            <div class="fb-desc">fs.readFile → streams HTML bytes with text/html MIME</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-num">3</div>
+          <div class="flow-box">
+            <div class="fb-title">Browser loads scripts</div>
+            <div class="fb-desc">app.js first (globals), then page script (IIFE)</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-num">4</div>
+          <div class="flow-box">
+            <div class="fb-title">XHR fetch(es)</div>
+            <div class="fb-desc">fetchJSON() calls GET /data/*.json — served as application/json</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-num">5</div>
+          <div class="flow-box">
+            <div class="fb-title">Transform</div>
+            <div class="fb-desc">JS filters, sorts, aggregates the parsed JSON array in memory</div>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-num">6</div>
+          <div class="flow-box">
+            <div class="fb-title">Render to DOM</div>
+            <div class="fb-desc">innerHTML / appendChild into pre-existing elements by id</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="margin-top:20px; padding-top:16px; border-top:1px solid #f1f5f9; display:flex; gap:24px; flex-wrap:wrap;">
+        <div>
+          <span style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#94a3b8">Parallel fetch (dashboard & reports)</span>
+          <p style="font-size:12px; color:#64748b; margin-top:4px;">Both JSON files are fetched simultaneously. A <code>loadedCount</code> counter triggers render only after both callbacks return.</p>
+        </div>
+        <div>
+          <span style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:#94a3b8">No state persistence</span>
+          <p style="font-size:12px; color:#64748b; margin-top:4px;">All state is in-memory JS variables inside each page's IIFE. Navigating to a new page resets everything — data is re-fetched on every load.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FILE MAP ── -->
+  <div class="section">
+    <div class="section-title">File Map</div>
+    <div class="file-map">
+
+      <div class="fm-group">
+        <div class="fm-group-header fmh-green">JavaScript — js/</div>
+        <div class="fm-file">
+          <div class="fm-filename">app.js</div>
+          <div class="fm-filedesc">Shared globals: <code>fetchJSON</code>, <code>formatCurrency</code>, <code>formatDate</code>, <code>getStatusBadge</code>. Loaded first on every page.</div>
+        </div>
+        <div class="fm-file">
+          <div class="fm-filename">dashboard.js</div>
+          <div class="fm-filedesc">KPI cards, orders-by-status counts, warehouse distribution, recent 10 orders table.</div>
+        </div>
+        <div class="fm-file">
+          <div class="fm-filename">inventory.js</div>
+          <div class="fm-filedesc">Product table with live search (name/SKU/id) and category dropdown filter. Highlights low-stock rows.</div>
+        </div>
+        <div class="fm-file">
+          <div class="fm-filename">orders.js</div>
+          <div class="fm-filedesc">Order table with clickable status filter buttons. Maintains <code>currentFilter</code> state.</div>
+        </div>
+        <div class="fm-file">
+          <div class="fm-filename">reports.js</div>
+          <div class="fm-filedesc">Monthly summary, top-5 products by revenue, summary stats. Contains 3 intentional bugs.</div>
+        </div>
+      </div>
+
+      <div class="fm-group">
+        <div class="fm-group-header fmh-blue">HTML Pages</div>
+        <div class="fm-file">
+          <div class="fm-filename">index.html</div>
+          <div class="fm-filedesc">Dashboard. Inline script for warehouse counts + <code>dashboard.js</code>.</div>
+        </div>
+        <div class="fm-file">
+          <div class="fm-filename">inventory.html</div>
+          <div class="fm-filedesc">Inventory list. <code>#search-input</code> and <code>#category-filter</code> wired by <code>inventory.js</code>.</div>
+        </div>
+        <div class="fm-file">
+          <div class="fm-filename">orders.html</div>
+          <div class="fm-filedesc">Orders list. Five <code>.filter-btn</code> buttons with <code>data-filter</code> attributes.</div>
+        </div>
+        <div class="fm-file">
+          <div class="fm-filename">reports.html</div>
+          <div class="fm-filedesc">Reports. Non-functional year/status dropdowns. Three stat boxes + two data tables.</div>
+        </div>
+      </div>
+
+      <div class="fm-group">
+        <div class="fm-group-header fmh-orange">Data — data/</div>
+        <div class="fm-file">
+          <div class="fm-filename">products.json</div>
+          <div class="fm-filedesc">20 products. Fields: <code>id, name, sku, category, price, stock, warehouse, reorderLevel</code>. Categories: Electronics, Furniture, Office Supplies, Packaging. Warehouses: San Francisco, Tokyo, London.</div>
+        </div>
+        <div class="fm-file">
+          <div class="fm-filename">orders.json</div>
+          <div class="fm-filedesc">28 orders across Jan–Dec 2025. Fields: <code>id, customerName, productId, productName, quantity, status, orderDate, total</code>. Statuses: Pending, Shipped, Delivered, Cancelled.</div>
+        </div>
+      </div>
+
+      <div class="fm-group">
+        <div class="fm-group-header fmh-purple">Other</div>
+        <div class="fm-file">
+          <div class="fm-filename">server.js</div>
+          <div class="fm-filedesc">Node.js static server. MIME map for .html/.css/.js/.json/.png/.jpg/.ico. 404/500 error handling. Root path → index.html.</div>
+        </div>
+        <div class="fm-file">
+          <div class="fm-filename">css/styles.css</div>
+          <div class="fm-filedesc">All styles. Key systems: sidebar layout, KPI grid, card components, data tables, badge variants, filter buttons, low-stock row highlight, responsive 1100px breakpoint.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── KNOWN BUGS ── -->
+  <div class="section">
+    <div class="section-title">Intentional Bugs — js/reports.js</div>
+    <div class="bugs-list">
+
+      <div class="bug-card">
+        <div class="bug-num">1</div>
+        <div>
+          <div class="bug-title">Console spam</div>
+          <div class="bug-desc"><code>console.log("reports debug: rendering")</code> is placed inside <code>renderReports()</code>, <code>renderMonthlySummary()</code>, <code>renderTopProducts()</code>, and <code>renderSummaryStats()</code> — fires 4 times on every page load.</div>
+        </div>
+      </div>
+
+      <div class="bug-card">
+        <div class="bug-num">2</div>
+        <div>
+          <div class="bug-title">Non-functional filter controls</div>
+          <div class="bug-desc">The Year and Status dropdowns (<code>#year-filter</code>, <code>#report-status-filter</code>) in the Report Filters card are fully rendered in the UI but their <code>change</code> event handlers are intentionally empty — selecting a value does nothing.</div>
+        </div>
+      </div>
+
+      <div class="bug-card">
+        <div class="bug-num">3</div>
+        <div>
+          <div class="bug-title">Wrong Average Order Value calculation</div>
+          <div class="bug-desc">In <code>renderSummaryStats()</code>, the Avg Order Value is computed as <code>totalRevenue / products.length</code> (dividing by 20 products) instead of <code>totalRevenue / totalOrders</code> — producing an inflated and incorrect value.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</body>
+</html>

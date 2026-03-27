@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reports — InvTrack</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="app-layout">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">&#9783;</div>
+      <div>
+        <div class="brand-name">InvTrack</div>
+        <div class="brand-sub">Inventory Manager</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main Menu</div>
+      <a href="index.html" class="nav-item" data-href="index.html">
+        <span class="nav-icon">&#9783;</span> Dashboard
+      </a>
+      <a href="inventory.html" class="nav-item" data-href="inventory.html">
+        <span class="nav-icon">&#9741;</span> Inventory
+      </a>
+      <a href="orders.html" class="nav-item" data-href="orders.html">
+        <span class="nav-icon">&#128666;</span> Orders
+      </a>
+      <a href="reports.html" class="nav-item active" data-href="reports.html">
+        <span class="nav-icon">&#128202;</span> Reports
+      </a>
+      <a href="restocking.html" class="nav-item" data-href="restocking.html">
+        <span class="nav-icon">&#128230;</span> Restocking
+      </a>
+    </nav>
+    <div class="sidebar-footer">&#169; 2025 InvTrack</div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="topbar">
+      <div>
+        <div class="topbar-title">Reports</div>
+        <div class="topbar-subtitle">Sales analytics and summaries</div>
+      </div>
+    </div>
+
+    <div class="page-content">
+
+      <!-- Filter Controls (BUG: present but non-functional) -->
+      <div class="card section-gap">
+        <div class="card-header">
+          <span class="card-title">Report Filters</span>
+        </div>
+        <div class="card-body">
+          <div class="filter-bar">
+            <label style="font-size:13px;font-weight:600;color:#64748b;margin-right:4px">Year:</label>
+            <select id="year-filter" class="filter-select">
+              <option value="2025">2025</option>
+              <option value="2024">2024</option>
+              <option value="2023">2023</option>
+            </select>
+            <label style="font-size:13px;font-weight:600;color:#64748b;margin-right:4px;margin-left:10px">Status:</label>
+            <select id="report-status-filter" class="filter-select">
+              <option value="all">All Statuses</option>
+              <option value="Pending">Pending</option>
+              <option value="Shipped">Shipped</option>
+              <option value="Delivered">Delivered</option>
+              <option value="Cancelled">Cancelled</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary Stats -->
+      <div class="stats-row section-gap">
+        <div class="stat-box">
+          <div class="stat-label">Total Revenue</div>
+          <div class="stat-value" id="stat-total-revenue">—</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Total Orders (excl. Cancelled)</div>
+          <div class="stat-value" id="stat-total-orders">—</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Avg Order Value</div>
+          <div class="stat-value" id="stat-avg-order">—</div>
+        </div>
+      </div>
+
+      <!-- Monthly Summary -->
+      <div class="card section-gap">
+        <div class="card-header">
+          <span class="card-title">Monthly Order Summary — 2025</span>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Month</th>
+                <th>Orders</th>
+                <th>Revenue</th>
+                <th>Avg per Order</th>
+              </tr>
+            </thead>
+            <tbody id="monthly-body">
+              <tr><td colspan="4" class="empty-state">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Top 5 Products -->
+      <div class="card section-gap">
+        <div class="card-header">
+          <span class="card-title">Top 5 Products by Revenue</span>
+          <span class="badge badge-green">Excluding Cancelled</span>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Rank</th>
+                <th>Product</th>
+                <th>Units Sold</th>
+                <th>Revenue</th>
+              </tr>
+            </thead>
+            <tbody id="top-products-body">
+              <tr><td colspan="4" class="empty-state">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /page-content -->
+  </div><!-- /main-content -->
+</div><!-- /app-layout -->
+
+<script src="js/app.js"></script>
+<script src="js/reports.js"></script>
+</body>
+</html>

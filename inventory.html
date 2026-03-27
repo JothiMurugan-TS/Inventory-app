@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventory — InvTrack</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="app-layout">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sidebar-brand">
+      <div class="brand-icon">&#9783;</div>
+      <div>
+        <div class="brand-name">InvTrack</div>
+        <div class="brand-sub">Inventory Manager</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Main Menu</div>
+      <a href="index.html" class="nav-item" data-href="index.html">
+        <span class="nav-icon">&#9783;</span> Dashboard
+      </a>
+      <a href="inventory.html" class="nav-item active" data-href="inventory.html">
+        <span class="nav-icon">&#9741;</span> Inventory
+      </a>
+      <a href="orders.html" class="nav-item" data-href="orders.html">
+        <span class="nav-icon">&#128666;</span> Orders
+      </a>
+      <a href="reports.html" class="nav-item" data-href="reports.html">
+        <span class="nav-icon">&#128202;</span> Reports
+      </a>
+      <a href="restocking.html" class="nav-item" data-href="restocking.html">
+        <span class="nav-icon">&#128230;</span> Restocking
+      </a>
+    </nav>
+    <div class="sidebar-footer">&#169; 2025 InvTrack</div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="topbar">
+      <div>
+        <div class="topbar-title">Inventory</div>
+        <div class="topbar-subtitle">All products across all warehouses</div>
+      </div>
+    </div>
+
+    <div class="page-content">
+      <div class="card section-gap">
+        <div class="card-header">
+          <span class="card-title">Product Catalog</span>
+          <span class="badge badge-red" style="font-size:11px">
+            &#9650; Orange rows = below reorder level
+          </span>
+        </div>
+        <div class="card-body" style="padding-bottom:0">
+          <div class="filter-bar">
+            <input
+              type="text"
+              id="search-input"
+              class="filter-input"
+              placeholder="Search by name, SKU or ID..."
+            />
+            <select id="category-filter" class="filter-select">
+              <option value="">All Categories</option>
+              <option value="Electronics">Electronics</option>
+              <option value="Furniture">Furniture</option>
+              <option value="Office Supplies">Office Supplies</option>
+              <option value="Packaging">Packaging</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>SKU</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Reorder Level</th>
+                <th>Warehouse</th>
+              </tr>
+            </thead>
+            <tbody id="inventory-body">
+              <tr><td colspan="8" class="empty-state">Loading...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div><!-- /page-content -->
+  </div><!-- /main-content -->
+</div><!-- /app-layout -->
+
+<script src="js/app.js"></script>
+<script src="js/inventory.js"></script>
+</body>
+</html>

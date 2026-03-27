@@ -1,0 +1,22 @@
+[
+  { "id": "P001", "name": "Laptop Pro 15", "sku": "ELEC-LP15-001", "category": "Electronics", "price": 1299.99, "stock": 42, "warehouse": "San Francisco", "reorderLevel": 10 },
+  { "id": "P002", "name": "Wireless Keyboard", "sku": "ELEC-WK-002", "category": "Electronics", "price": 89.99, "stock": 7, "warehouse": "Tokyo", "reorderLevel": 15 },
+  { "id": "P003", "name": "4K Monitor 27\"", "sku": "ELEC-MON27-003", "category": "Electronics", "price": 549.99, "stock": 18, "warehouse": "London", "reorderLevel": 8 },
+  { "id": "P004", "name": "USB-C Hub 7-Port", "sku": "ELEC-USBC-004", "category": "Electronics", "price": 49.99, "stock": 3, "warehouse": "San Francisco", "reorderLevel": 20 },
+  { "id": "P005", "name": "Noise-Cancelling Headphones", "sku": "ELEC-NCH-005", "category": "Electronics", "price": 299.99, "stock": 25, "warehouse": "Tokyo", "reorderLevel": 10 },
+  { "id": "P006", "name": "Ergonomic Office Chair", "sku": "FURN-EOC-006", "category": "Furniture", "price": 449.99, "stock": 12, "warehouse": "San Francisco", "reorderLevel": 5 },
+  { "id": "P007", "name": "Standing Desk 60\"", "sku": "FURN-SD60-007", "category": "Furniture", "price": 699.99, "stock": 6, "warehouse": "London", "reorderLevel": 4 },
+  { "id": "P008", "name": "Bookshelf 5-Tier", "sku": "FURN-BS5-008", "category": "Furniture", "price": 189.99, "stock": 19, "warehouse": "Tokyo", "reorderLevel": 6 },
+  { "id": "P009", "name": "Filing Cabinet 3-Drawer", "sku": "FURN-FC3-009", "category": "Furniture", "price": 249.99, "stock": 2, "warehouse": "San Francisco", "reorderLevel": 5 },
+  { "id": "P010", "name": "Whiteboard 48x36", "sku": "FURN-WB48-010", "category": "Furniture", "price": 129.99, "stock": 30, "warehouse": "London", "reorderLevel": 8 },
+  { "id": "P011", "name": "Ballpoint Pens (Box 50)", "sku": "OFCS-BP50-011", "category": "Office Supplies", "price": 14.99, "stock": 5, "warehouse": "Tokyo", "reorderLevel": 25 },
+  { "id": "P012", "name": "A4 Paper Ream 500", "sku": "OFCS-A4P-012", "category": "Office Supplies", "price": 9.99, "stock": 120, "warehouse": "San Francisco", "reorderLevel": 30 },
+  { "id": "P013", "name": "Sticky Notes Multipack", "sku": "OFCS-SN-013", "category": "Office Supplies", "price": 12.49, "stock": 8, "warehouse": "London", "reorderLevel": 20 },
+  { "id": "P014", "name": "Stapler Heavy Duty", "sku": "OFCS-SHD-014", "category": "Office Supplies", "price": 34.99, "stock": 45, "warehouse": "Tokyo", "reorderLevel": 10 },
+  { "id": "P015", "name": "Desk Organizer Set", "sku": "OFCS-DOS-015", "category": "Office Supplies", "price": 27.99, "stock": 33, "warehouse": "San Francisco", "reorderLevel": 10 },
+  { "id": "P016", "name": "Bubble Wrap Roll 50m", "sku": "PACK-BW50-016", "category": "Packaging", "price": 39.99, "stock": 4, "warehouse": "London", "reorderLevel": 10 },
+  { "id": "P017", "name": "Cardboard Boxes 20x20x20 (25pk)", "sku": "PACK-CB25-017", "category": "Packaging", "price": 29.99, "stock": 60, "warehouse": "San Francisco", "reorderLevel": 15 },
+  { "id": "P018", "name": "Packing Tape 6-Roll", "sku": "PACK-PT6-018", "category": "Packaging", "price": 18.99, "stock": 9, "warehouse": "Tokyo", "reorderLevel": 20 },
+  { "id": "P019", "name": "Foam Peanuts 5 cu ft", "sku": "PACK-FP5-019", "category": "Packaging", "price": 22.99, "stock": 14, "warehouse": "London", "reorderLevel": 8 },
+  { "id": "P020", "name": "Webcam 1080p", "sku": "ELEC-WC1080-020", "category": "Electronics", "price": 79.99, "stock": 11, "warehouse": "San Francisco", "reorderLevel": 12 }
+]
